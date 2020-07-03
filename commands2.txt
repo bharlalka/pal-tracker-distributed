@@ -1,0 +1,86 @@
+dotnet add Applications\BacklogServer package Steeltoe.Discovery.ClientCore --version 2.4.2
+
+dotnet add Applications\BacklogServer package Steeltoe.Extensions.Configuration.CloudFoundryCore --version 2.4.2
+
+dotnet add Applications\BacklogServer package Steeltoe.Common.Hosting --version 2.4.2
+
+dotnet add Applications\RegistrationServer package Steeltoe.Discovery.ClientCore --version 2.4.2
+
+dotnet add Applications\RegistrationServer package Steeltoe.Extensions.Configuration.CloudFoundryCore --version 2.4.2
+
+dotnet add Applications\RegistrationServer package Steeltoe.Common.Hosting --version 2.4.2
+
+dotnet add Applications\TimesheetsServer package Steeltoe.Discovery.ClientCore --version 2.4.2
+
+dotnet add Applications\TimesheetsServer package Steeltoe.Extensions.Configuration.CloudFoundryCore --version 2.4.2
+
+dotnet add Applications\TimesheetsServer package Steeltoe.Common.Hosting --version 2.4.2
+
+
+
+-----------------------------------------------------------------------------------------------------------
+dotnet run --urls "http://*:8083" --project Applications/RegistrationServer
+
+dotnet run --urls "http://*:8081" --project Applications/AllocationsServer
+
+dotnet run --urls "http://*:8082" --project Applications/BacklogServer
+
+dotnet run --urls "http://*:8084" --project Applications/TimesheetsServer
+
+----------------------------------------------------------------------------------------------------------------------------
+
+dotnet add Components/Allocations package Steeltoe.CircuitBreaker.HystrixCore --version 2.4.2
+
+dotnet add Components/Allocations package Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore --version 2.4.2
+
+dotnet add Components/Backlog package Steeltoe.CircuitBreaker.HystrixCore --version 2.4.2
+
+dotnet add Components/Backlog package Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore --version 2.4.2
+
+dotnet add Components/Timesheets package Steeltoe.CircuitBreaker.HystrixCore --version 2.4.2
+
+dotnet add Components/Timesheets package Steeltoe.CircuitBreaker.Hystrix.MetricsEventsCore --version 2.4.2
+
+----------------------------------------------------------------------------------------------------------------------
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-hc.cfapps.io/registration -d'{"name": "Tom"}'
+
+curl -i https://registration-pal-hc.cfapps.io/accounts?ownerId=1
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-hc.cfapps.io/projects -d'{"name": "Project A", "accountId": 1}'
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-hc.cfapps.io/projects -d'{"name": "Project B", "accountId": 1}'
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-hc.cfapps.io/allocations/ -d'{"projectId": 1, "userId": 1, "firstDay": "2015-05-17", "lastDay": "2015-05-18"}'
+
+----Sotop
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-hc.cfapps.io/allocations/ -d'{"projectId": 11, "userId": 1, "firstDay": "2015-05-17", "lastDay": "2015-05-18"}'
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-hc.cfapps.io/allocations/ -d'{"projectId": 1, "userId": 1, "firstDay": "2015-05-17", "lastDay": "2015-05-18"}'
+
+---Start
+
+curl -i -XPOST -H"Content-Type: application/json" https://allocations-pal-hc.cfapps.io/allocations/ -d'{"projectId": 11, "userId": 1, "firstDay": "2015-05-17", "lastDay": "2015-05-18"}'
+
+
+curl -i https://allocations-pal-hc.cfapps.io/hystrix/hystrix.stream
+
+
+
+https://dell-emc-pal.login.run.pivotal.io
+
+"client_secret": "88eb3e63-4213-4143-a255-fcfa3b243478",
+"client_id": "766fa177-eddb-4620-b87e-9730fc2c1eed"
+
+
+curl -k 'https://dell-emc-pal.login.run.pivotal.io/oauth/token' -i -u '766fa177-eddb-4620-b87e-9730fc2c1eed:88eb3e63-4213-4143-a255-fcfa3b243478' -X POST -H 'Accept: application/json' -H 'Content-Type: application/x-www-form-urlencoded' -d 'grant_type=client_credentials&response_type=token'
+
+
+
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-hc.cfapps.io/registration -d'{"name": "Tom"}'
+
+curl -i https://registration-pal-hc.cfapps.io/accounts?ownerId=1
+
+curl -i -XPOST -H"Content-Type: application/json" https://registration-pal-hc.cfapps.io/projects -d'{"name": "Project A", "accountId": 1}'
+

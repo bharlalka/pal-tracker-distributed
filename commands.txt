@@ -1,0 +1,104 @@
+git log --graph --decorate --oneline --all
+
+
+
+git remote add origin https://github.com/bharlalka/pal-tracker.git
+git push -u origin master
+
+choco install dotnetcore-sdk --version=3.1.102
+
+dotnet new webapi --output src/PalTracker --name PalTracker
+
+https://api.run.pivotal.io
+
+git remote add origin https://github.com/bharlalka/pal-tracker.git
+git push -u origin master
+
+
+cf login -a https://api.run.pivotal.io
+
+
+
+.\gradlew cloudNativeDeveloperSimpleApp -PserverUrl=https://[app-url]
+
+./gradlew cloudNativeDeveloperRest -PserverUrl=https://pal-tracker-bg.cfapps.io
+
+./gradlew cloudNativeDeveloperDatabaseMigrations -PserverUrl=https://pal-tracker-bg.cfapps.io
+
+./gradlew cloudNativeDeveloperDatabaseAccess -PserverUrl=https://pal-tracker-bg.cfapps.io
+
+./gradlew  cloudNativeDeveloperHealthMonitoring -PserverUrl=https://pal-tracker-bg.cfapps.io/actuator
+---------------------------------------------------------------------
+
+api endpoint:   https://api.run.pivotal.io
+api version:    2.147.0
+user:           bajrang.harlalka@dell.com
+org:            DellEMC_PAL
+space:          bajrang.harlalka@dell.com
+
+CF_API - https://api.run.pivotal.io
+CF_PASSWORD
+CF_USERNAME - bajrang.harlalka@dell.com
+CF_ORG  - DellEMC_PAL
+CF_SPACE_REVIEW - bajrang.harlalka@dell.com
+CF_SPACE_PROD - bajrang.harlalka@dell.com
+
+pal-tracker-bg.cfapps.io
+pal-tracker-bg-prod.cfapps.io
+
+
+ deployToReview:
+
++            curl https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.1.1/flyway-commandline-5.1.1-linux-x64.tar.gz | tar xvz
++
+    - run:
+        name: Unzip artifacts
+        command: |
+            mkdir -p $EXTRACT_DEST
+            tar -xvzf artifacts/pal-tracker-$CIRCLE_SHA1.tgz -C $EXTRACT_DEST
+
+    - run:
+        name: Deploy
+        command: |
+            cd $EXTRACT_DEST
+
+            cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $ENVIRONMENT
+            cf push -f manifest-$ENVIRONMENT.yml
++           bash ./migrate-databases.sh pal-tracker . tracker-database
+
+
+
+Whats the question can you try now 
+
+
+
+./gradlew dotnetCloudNativeDeveloperDistributedSystemDeployment \
+    -PregistrationServerUrl=https://registration-pal-hc.cfapps.io/ \
+    -PbacklogServerUrl=https://backlog-pal-hc.cfapps.io/ \
+    -PallocationsServerUrl=https://allocations-pal-hc.cfapps.io/ \
+    -PtimesheetsServerUrl=https://timesheets-pal-hc.cfapps.io/
+
+./gradlew dotnetCloudNativeDeveloperDistributedSystemWithServiceDiscovery \
+    -PregistrationServerUrl=https://registration-pal-hc.cfapps.io/ \
+    -PbacklogServerUrl=https://backlog-pal-hc.cfapps.io/ \
+    -PallocationsServerUrl=https://allocations-pal-hc.cfapps.io/ \
+    -PtimesheetsServerUrl=https://timesheets-pal-hc.cfapps.io/
+
+
+./gradlew dotnetCloudNativeDeveloperDistributedSystemWithCircuitBreaker \
+    -PregistrationServerUrl=https://registration-pal-hc.cfapps.io/ \
+    -PbacklogServerUrl=https://backlog-pal-hc.cfapps.io/ \
+    -PallocationsServerUrl=https://allocations-pal-hc.cfapps.io/ \
+    -PtimesheetsServerUrl=https://timesheets-pal-hc.cfapps.io/
+
+./gradlew dotnetCloudNativeDeveloperDistributedSystemWithSecurity \
+    -PregistrationServerUrl=https://registration-pal-hc.cfapps.io/ \
+    -PbacklogServerUrl=https://backlog-pal-hc.cfapps.io/ \
+    -PallocationsServerUrl=https://allocations-pal-hc.cfapps.io/ \
+    -PtimesheetsServerUrl=https://timesheets-pal-hc.cfapps.io/ \
+    -PuaaUrl=https://dell-emc-pal.login.run.pivotal.io \
+    -PclientId=766fa177-eddb-4620-b87e-9730fc2c1eed \
+    -PclientSecret=88eb3e63-4213-4143-a255-fcfa3b243478
+
+
+./gradlew dotnetCloudNativeDeveloperDistributedSystemWithConfigServer -PregistrationServerUrl=https://registration-pal-hc.cfapps.io/ -PbacklogServerUrl=https://backlog-pal-hc.cfapps.io/ -PallocationsServerUrl=https://allocations-pal-hc.cfapps.io/ -PtimesheetsServerUrl=https://timesheets-pal-hc.cfapps.io/ -PuaaUrl=https://dell-emc-pal.login.run.pivotal.io -PclientId=766fa177-eddb-4620-b87e-9730fc2c1eed -PclientSecret=88eb3e63-4213-4143-a255-fcfa3b243478
